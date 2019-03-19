@@ -68,12 +68,61 @@ class AccountCheck:
             data=self.get_file_content(file_name)
         return data
 
-    def create_report(self, file_name, content):
+    def create_report(self, report_title, added_user, erased_user, permission_added_user, permission_deleted_user, user_cnt):
+        # print(changed_user)
+        report_path = '/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/report/' + report_title + ".txt"
+
+        # report process
+        # title
+        self.create_report_file(
+            report_path,
+            report_title + "\n")
+
+        report_new_employee = "[New Employee]\n  -Permission added" + str(list(set(added_user))) + "\n"
+        report_terminate_employee = "[Terminate Employee]\n  -Permission deleted" + str(list(set(erased_user))) + "\n"
+        report_modified_employee_title = "[Working Employee]\n"
+        report_modified_employee_added = "  -Permission added" + str(permission_added_user) + "\n"
+        report_modified_employee_deleted = "  -Permission deleted" + str(permission_deleted_user) + "\n"
+        report_number_of_employee = str(user_cnt)
+
+        if (len(added_user) != 0):
+            print(report_new_employee)
+            self.append_to_report_file(
+                report_path,
+                report_new_employee)
+        if (len(erased_user) != 0):
+            print(report_terminate_employee)
+            self.append_to_report_file(
+                report_path,
+                report_terminate_employee)
+
+        if (len(permission_added_user) != 0 or len(permission_deleted_user) != 0):
+            print(report_modified_employee_title)
+            self.append_to_report_file(
+                report_path,
+                report_modified_employee_title)
+        if (len(permission_added_user) != 0):
+            print(report_modified_employee_added)
+            self.append_to_report_file(
+                report_path,
+                report_modified_employee_added)
+        if (len(permission_deleted_user) != 0):
+            print(report_modified_employee_deleted)
+            self.append_to_report_file(
+                report_path,
+                report_modified_employee_deleted)
+
+        self.append_to_report_file(
+            report_path,
+            report_number_of_employee
+        )
+
+    def create_report_file(self, file_name, content):
         f = open(file_name, 'w')
         f.write(content)
         f.close()
 
-    def make_report(self, file_name, content):
+    def append_to_report_file(self, file_name, content):
         f = open(file_name, 'a')
         f.write(content)
         f.close()
@@ -119,52 +168,9 @@ class AccountCheck:
                             else:
                                 print ('ISSUES!!!!!' + str(changed_user))
 
-       # print(changed_user)
-        report_path = '/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/report/' + title + ".txt"
+        self.create_report(title, added_user,erased_user,permission_added_user,permission_deleted_user, len(self.get_entire_users(self.get_file_data(file_name))))
 
-        #title
-        self.create_report(
-            report_path,
-            title + "\n")
 
-        report_new_employee = "[New Employee]\n  -Permission added" + str(list(set(added_user)))+"\n"
-        report_terminate_employee = "[Terminate Employee]\n  -Permission deleted" + str(list(set(erased_user))) +"\n"
-        report_modified_employee_title = "[Working Employee]\n"
-        report_modified_employee_added = "  -Permission added" + str(permission_added_user)+"\n"
-        report_modified_employee_deleted = "  -Permission deleted" + str(permission_deleted_user)+"\n"
-        report_number_of_employee = str(len(self.get_entire_users(self.get_file_data(file_name))))
-
-        if (len(added_user) != 0):
-            print(report_new_employee)
-            self.make_report(
-                report_path,
-                report_new_employee)
-        if (len(erased_user) != 0):
-            print(report_terminate_employee)
-            self.make_report(
-                report_path,
-                report_terminate_employee)
-
-        if(len(permission_added_user) != 0 or len(permission_deleted_user) != 0):
-            print(report_modified_employee_title)
-            self.make_report(
-                report_path,
-                report_modified_employee_title)
-        if(len(permission_added_user) != 0):
-            print(report_modified_employee_added)
-            self.make_report(
-                report_path,
-                report_modified_employee_added)
-        if (len(permission_deleted_user) != 0):
-            print(report_modified_employee_deleted)
-            self.make_report(
-                report_path,
-                report_modified_employee_deleted)
-
-        self.make_report(
-            report_path,
-            report_number_of_employee
-        )
 
 if __name__ == '__main__':
     path = '/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/'
