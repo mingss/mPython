@@ -23,8 +23,7 @@ class AccountCheck:
     #신규입사자 퇴사자 구분
     def check_employee_status(self, current_users,pre_users):
         changed_users = self.diff(current_users, pre_users)
-        if(len(changed_users) != 0):
-            print (changed_users)
+        #if(len(changed_users) != 0): print (changed_users)
 
         new_employee = []
         terminate_employee = []
@@ -86,28 +85,23 @@ class AccountCheck:
         report_number_of_employee = str(user_cnt)
 
         if (len(added_user) != 0):
-            print(report_new_employee)
             self.append_to_report_file(
                 report_path,
                 report_new_employee)
         if (len(erased_user) != 0):
-            print(report_terminate_employee)
             self.append_to_report_file(
                 report_path,
                 report_terminate_employee)
 
         if (len(permission_added_user) != 0 or len(permission_deleted_user) != 0):
-            print(report_modified_employee_title)
             self.append_to_report_file(
                 report_path,
                 report_modified_employee_title)
         if (len(permission_added_user) != 0):
-            print(report_modified_employee_added)
             self.append_to_report_file(
                 report_path,
                 report_modified_employee_added)
         if (len(permission_deleted_user) != 0):
-            print(report_modified_employee_deleted)
             self.append_to_report_file(
                 report_path,
                 report_modified_employee_deleted)
@@ -116,6 +110,8 @@ class AccountCheck:
             report_path,
             report_number_of_employee
         )
+
+        print(self.get_file_data(report_path))
 
     def create_report_file(self, file_name, content):
         f = open(file_name, 'w')
@@ -150,40 +146,38 @@ class AccountCheck:
                     role = self.user_name_split(current_roles[i].split("\n\t"))
                     prerole = self.user_name_split(pre_roles[j].split("\n\t"))
                     if (role[0] == prerole[0]):
-                        #changed_users = diff(role, prerole)
-                        #print(changed_users)
                         for changed_user in self.diff(role, prerole):
                             if changed_user in new_employee and changed_user in role:
-                                #print "For " + role[0] + " added: " + str(user)
                                 added_user.append(str(changed_user))
                             elif changed_user in terminate_employee and changed_user in prerole:
-                                #print "For " + role[0] + " erased: " + str(user)
                                 erased_user.append(str(changed_user))
                             elif changed_user not in new_employee and changed_user in role:
                                 permission_added_user.append((role[0],str(changed_user)))
-                                #print role[0] + "permission Added: " + str(user)
                             elif changed_user not in terminate_employee and changed_user in prerole:
                                 permission_deleted_user.append((role[0], str(changed_user)))
-                                #print role[0] + "permission deleted: " + str(user)
                             else:
                                 print ('ISSUES!!!!!' + str(changed_user))
 
-        self.create_report(title, added_user,erased_user,permission_added_user,permission_deleted_user, len(self.get_entire_users(self.get_file_data(file_name))))
+        self.create_report(
+            title,
+            added_user, #신규 임직원
+            erased_user, #퇴사 임직원
+            permission_added_user, #권한 추가 임직원
+            permission_deleted_user, #권한 제거 임직원
+            len(self.get_entire_users(self.get_file_data(file_name))) #최근 임직원 수
+        )
 
 
 
 if __name__ == '__main__':
     path = '/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/'
     listing = sorted(os.listdir(path))
-    print(listing)
+    #print(listing)
 
     for i in range(2, 52):
         first_filename = '%dw[NGP LDAP] Permission Summary.eml' % i
         second_filename = '%dw[NGP LDAP] Permission Summary.eml' % (i+1)
-        #filename = "%dw.txt" % i
 
-        print("%d week summary" % i)
-        #print(first_filename, second_filename)
         ac = AccountCheck()
         try:
             ac.check(second_filename ,path + second_filename , path + first_filename)
