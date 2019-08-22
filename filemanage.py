@@ -126,6 +126,7 @@ class AccountCheck:
     def check(self, title, file_name, pre_file_name):
         data = self.get_file_data(file_name)
         current_users = self.get_entire_users(data)
+
         current_roles = data.split("\n\n")
 
         predata = self.get_file_data(pre_file_name)
@@ -171,15 +172,24 @@ class AccountCheck:
 
 if __name__ == '__main__':
     path = '/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/'
-    listing = sorted(os.listdir(path))
-    #print(listing)
 
+    ac = AccountCheck()
+    employeelist = ac.get_entire_users(ac.get_file_data('/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/21w[NGP LDAP] Permission Summary.eml'))
+    with open('/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/report/employeelist.txt', 'w') as f:
+        for item in employeelist:
+            f.write("%s\n" % item)
     for i in range(2, 52):
         first_filename = '%dw[NGP LDAP] Permission Summary.eml' % i
         second_filename = '%dw[NGP LDAP] Permission Summary.eml' % (i+1)
 
-        ac = AccountCheck()
+        report_path = '/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/report/' + second_filename + ".txt"
+
+
+
+        #ac.append_to_report_file('/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/report/employeelist.txt',ac.get_entire_users('19w[NGP LDAP] Permission Summary.eml'))
         try:
+            if(os.path.exists(report_path) == True): # Already reported.
+                continue
             ac.check(second_filename ,path + second_filename , path + first_filename)
         except FileNotFoundError:
             print ('No result')
