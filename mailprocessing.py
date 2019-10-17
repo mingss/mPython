@@ -9,7 +9,7 @@ def mailsend():
     server = "smtp.office365.com"
     port = 587
     user = "minsu.kim@cdnetworks.biz"
-    pwd = ""
+    pwd = "pw"
 
     title = "Hi!"
     text = "이거 파이썬으로 보내는거에요! :)"
