@@ -174,19 +174,19 @@ if __name__ == '__main__':
     path = '/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/'
 
     ac = AccountCheck()
-    employeelist = ac.get_entire_users(ac.get_file_data('/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/21w[NGP LDAP] Permission Summary.eml'))
+    employeelist = ac.get_entire_users(ac.get_file_data('/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/41w[NGP LDAP] Permission Summary.eml'))
     with open('/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/report/employeelist.txt', 'w') as f:
         for item in employeelist:
-            f.write("%s\n" % item)
+            f.write("%s@cdnetworks.com\n" % item)
     for i in range(2, 52):
         first_filename = '%dw[NGP LDAP] Permission Summary.eml' % i
         second_filename = '%dw[NGP LDAP] Permission Summary.eml' % (i+1)
 
-        report_path = '/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/report/' + second_filename + ".txt"
+        #report_path = '/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/report/' + second_filename + ".txt"
 
 
 
-        #ac.append_to_report_file('/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/report/employeelist.txt',ac.get_entire_users('19w[NGP LDAP] Permission Summary.eml'))
+        #ac.append_to_report_file('/Users/minsu.kim/Documents/_MingCDN/Information Security Team/2019/Admin Permission Review/report/employeelist.txt',ac.get_entire_users('41w[NGP LDAP] Permission Summary.eml'))
         try:
             if(os.path.exists(report_path) == True): # Already reported.
                 continue
