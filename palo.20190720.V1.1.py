@@ -40,8 +40,7 @@ def draft():
 def getAPIkey():
     for ip in IPlists:
         pAddr = ip
-        pUser = 'minsu.kim2'
-        pPass = '0510Alstn1@'
+
 
 
         # API KEY URL 생성
